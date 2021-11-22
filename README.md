@@ -135,7 +135,7 @@ calculator sum
     Expected: 0
     Received: 4
 ```
-
+O texto deixa bem claro que o valor esperado seria 0, mas o obtido foi 4. Ele também, no início, indica quais testes falharam.
 Corrija o erro de lógica e rode os testes novamente antes de continuarmos.
 
 ## Casos de borda
