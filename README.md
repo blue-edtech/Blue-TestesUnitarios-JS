@@ -1,4 +1,4 @@
-# Testes Unitários com Javascript e Jest
+# Testes Unitários com JavaScript e Jest
 
 Testes unitários são testes que validam pequenas unidades lógicas e regras de negócio da sua aplicação de forma simples e automatizada.
 
@@ -6,7 +6,7 @@ São uma prática essencial para todo e qualquer sistema, pois garantem que seu 
 
 Além disso, quando bem construídos, funcionam como uma espécie de documentação viva das suas regras de negócio: é muito natural recorrer aos testes unitários para entender o que alguns trechos de código estão fazendo, ao invés de gastar energia tentando entender linha a linha de uma função específica.
 
-## Código com testes X Código sem testes
+## Código com testes vs. Código sem testes
 
 Em um primeiro momento, pode parecer que escrever testes unitários pode desacelerar a entrega das suas funcionalidades. Porém, atualmente, as empresas mais relevantes tem se preocupado ainda mais com essa prática, justamente pelo fato de que não aplicar práticas como testes unitários aumenta muito o custo do projeto em um médio prazo, como no gráfico a seguir:
 
@@ -135,7 +135,7 @@ export function subtract(a, b) {
 }
 ```
 
-E o teste, em um outro `describe`, no `calculator.spec.js`, abaixo do segundo fechamento de chaves e parenteses `})`.
+E o teste, em um outro `describe`, no `calculator.spec.js`, abaixo do segundo fechamento de chaves e parênteses `})`.
 
 >  **Importante ❗❗:** Não se esqueça de adicionar no import, no topo do arquivo de teste, a função `subtract` ao lado de `sum` separado por uma `,`
 
@@ -154,7 +154,7 @@ describe("calculator subtract", () => {
   });
 });
 ```
-Observe que, no terminal, o Jest exibe um relatório bem preciso do que está errado:
+Observe que, no terminal, o `jest` exibe um relatório bem preciso do que está errado:
 
 ```
 calculator sum
