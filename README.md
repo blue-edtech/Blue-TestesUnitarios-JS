@@ -198,7 +198,7 @@ export function transfer(payer, receiver, transferAmount) {
 }
 ```
 
-Note que o retorno da função é a lista das contas envolvidas na transferência, com seus novos saldos, pois, futuramente, isso será armazenado em um banco de dados de forma atômica.
+Note que o retorno da função é a lista das contas envolvidas na transferência, com seus novos saldos.
 
 Agora, vamos aos testes:
 
