@@ -316,9 +316,12 @@ TDD, ou desenvolvimento orientado a testes, é uma prática de qualidade de cód
 Vamos imaginar que chegou uma nova demanda de negócio na nossa aplicação bancária e agora será cobrada uma taxa de 100 "dinheiros" (não vamos nos apegar a valores monetários aqui) para o pagante realizar uma transferência. Sem encostar no nosso código de produção (nome dado a parte do código fonte sem os testes), vamos primeiro criar um teste com essa nova regra de negócio. E vamos fazer isso e um arquivo de testes separados para fins didáticos: crie o arquivo `transferWithTax.spec.js` dentro da pasta `___tests___`
 
 ```javascript
+import { Account } from '../account.js';
+import { transferWithTax } from '../transferWithTax.js';
+
 describe('transferWithTax', () => {
 
-  test('it should charge 100 from the payer account for a transfer', () => {
+  test('it should charge 100 from the payer account with 1000 for a 500 transfer to a receiver account with 0', () => {
 
     const payerAccount = new Account(1, 1000)
     const receiverAccount = new Account(2, 0)
@@ -327,8 +330,8 @@ describe('transferWithTax', () => {
 
     expect(updatedAccounts).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({id: 1, balance: 500}),
-        expect.objectContaining({id: 2, balance: 400})
+        expect.objectContaining({id: 1, balance: 400}),
+        expect.objectContaining({id: 2, balance: 500})
 
       ])
     );
@@ -337,11 +340,134 @@ describe('transferWithTax', () => {
 });
 ```
 
-Vamos criar um novo arquivo `transferWithTax.js`, e uma nova função, `transferWithTax`, e retornar `undefined` apenas para conseguirmos rodar os testes sem erros de compilação.
+Vamos criar um novo arquivo `transferWithTax.js`, e uma nova função, `transferWithTax`, e retornar `undefined` apenas para conseguir rodar os testes sem erros de compilação.
 
-<!-- ## Setup dos testes
+```javascript
+import { Account } from "./account"
 
-Para facilitar a escrita de testes unitários e evitar códigos replicados, existe uma estratégia para configurar seus cenários de testes sem ter que toda vez escrever as mesmas linhas de código. No nosso caso, a cada teste criado, criamos duas `Accounts` e, a medida que evoluimos nossa aplicação, isso vai se tornar bastante repetitivo. Para isso existe o setup dos testes unitários, que é um bloco de código único que é executado sempre antes de todos os testes unitários. Funciona assim: -->
+export function transferWithTax(payer, receiver, transferAmount) {
+    return undefined  
+}
+```
 
+Com o comando `npm tes __tests__/transferWithTax.spec.js` percebemos que o teste falhou e é essa a primeira parte do TDD! Criar um micro-objetivo (teste unitário) que falhe. A próxima etapa agora é fazer esse teste passar. Deixe TUDO de lado e preocupe-se unicamente em fazer esse teste passar, da forma que for, sem se preocupar com legibilidade, design ou boas práticas (pode confiar). Podem ignorar outras regras de negócio, casos de borda= e complexidades.
+Sendo bem pragmático e seguindo o TDD "by the book" (no dia a dia, não necessariamente precisamos fazer desse jeito), podemos fazer o teste passar da seguinte forma:
+
+```javascript
+export function transferWithTax(payer, receiver, transferAmount) {
+    return [new Account(1, 400), new Account(2, 500)]
+}
+```
+
+Sim, isso mesmo, retornamos exatamente o que o teste espera. O TDD serve para você reduzir o seu problema em micro objetivos que, quando totalmente concluídos, resolvem o problema como um todo.
+Agora, nós vamos para a terceira parte do TDD: a refatoração. Já que temos nossa suite de testes verde (passando), temos segurança para melhorar a legibilidade e o design do nosso código que, com certeza, tem muito a melhorar. Então, vamos para o arquivo `transferWithTax.js` melhorar nosso algoritmo para torná-lo mais legível.
+
+```javascript
+export function transferWithTax(payer, receiver, transferAmount) {
+    const payerBalance = 400
+    const payerAccountId = 1
+    const payerAccount = new Account(payerAccountId, payerBalance)
+
+
+    const receiverBalance = 500
+    const receiverAccountId = 2
+    const receiverAccount = new Account(receiverAccountId, payerBalance)
+    
+
+    return [payerAccount, receiverAccount]
+}
+```
+
+Nessa refatoração, melhoramos a legiblidade do código removendo um code smell (padrão ruim de código) chamado "magic number" ou números mágicos, que são números escritos sem contexto no meio do código. Ao declararmos eles a variáveis com nomes descritivos, fica mais fácil entender o que cada um desses números significa. Mas observe que, propositalmente, há um erro nessa refatoração. Vamos rodar nossos testes com `npm tes __tests__/transferWithTax.spec.js`?
+
+```
+Expected: ArrayContaining [ObjectContaining {"balance": 500, "id": 1}, ObjectContaining {"balance": 400, "id": 2}]
+Received: [{"balance": 500, "id": 1}, {"balance": 500, "id": 1}]
+```
+
+Esse é o relatório que o jest nos trouxe. A conta recebedora da transferência deveria estar com 400 "dinheiros", mas nossa função retornou que ela está com 500. Algo deu errado na nossa refatoração, conseguem descobrir o que é?
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+Na linha 11, trocamos uma variável de lugar. Ao invés de a conta receber o saldo do recebedor, ela estava recebendo a do pagador. (Erros de copiar e colar são os mais comuns na área de programação e vocês vão lembrar muito disso!)
+
+```javascript
+const receiverAccount = new Account(receiverAccountId, receiverBalance)
+```
+
+Feita a alteração, rodamos os testes novamente com `npm test __tests__/transferWithTax.spec.js` e... sucesso!
+
+A etapa de refatoração é muito importante pois, como já falamos anteriormente, nosso código evolui e muda o tempo todo. Nunca refatore um código se a suite de testes estiver vermelha (não estiverem passando) pois dessa forma não existe garantia que sua refatoração não introduziu bugs e comportamentos inesperados.
+
+E assim fechamos o ciclo do TDD e voltamos para a primeira etapa da prática: escrever um teste válido que falhe ao ser executado, como na imagem:<br /><br />
+
+![Ciclo do TDD](images/tdd.png)
+
+Então retornamos ao ínicio e vamos escrever mais um teste para nossa funcionalidade
+
+```javascript
+
+test('it should charge 100 from the payer account with 2000 for a 100 transfer to a receiver account with 1000', () => {
+
+    const payerAccount = new Account(1, 2000)
+    const receiverAccount = new Account(2, 1000)
+
+    const updatedAccounts = transferWithTax(payerAccount, receiverAccount, 100)
+
+    expect(updatedAccounts).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({id: 1, balance: 1800}),
+        expect.objectContaining({id: 2, balance: 1100})
+
+      ])
+    );
+
+});
+
+```
+
+Ao rodar os testes com `npm test __tests__/transferWithTax.spec.js` vemos que, pelo relatório, o teste falha obviamente porque nosso algoritmo não está completo. Nosso novo objetivo agora é fazer esse teste passar, e agora podemos começar a dar passos maiores e adicionar mais lógica na nossa função:
+
+```javascript
+  export function transferWithTax(payer, receiver, transferAmount) {
+    const payerAccountAfterTransfer = new Account(payer.id, payer.balance - transferAmount - 100)
+    const receiverAccountAfterTransfer = new Account(receiver.id, receiver.balance + transferAmount)
+
+    return [payerAccountAfterTransfer, receiverAccountAfterTransfer]
+  }
+```
+
+E, rodando os testes novamente com `npm test __tests__/transferWithTax.spec.js`, podemos ver que acertamos no nosso algoritmo. E aí pulamos para a terceira etapa do TDD, a refatoração. O que podemos melhorar nesse código?
+
+```javascript
+export function transferWithTax(payer, receiver, transferAmount) {
+    const payerAccountAfterTransfer = new Account(payer.id, chargeTaxForTransfer(payer.balance, transferAmount))
+    const receiverAccountAfterTransfer = new Account(receiver.id, receiver.balance + transferAmount)
+
+    return [payerAccountAfterTransfer, receiverAccountAfterTransfer]
+}
+
+function chargeTaxForTransfer(balance, transferAmount) {
+    const tax = 100;
+    return balance - transferAmount - tax
+}
+```
+
+Nessa refatoração, extraimos para uma função privada com nome mais descritivo e legível a cobrança da taxa, além de declarar essa taxa a uma variável com um nome mais declarativo. E, rodando nossos testes com `npm test __tests__/transferWithTax.spec.js`, observamos que nossa refatoração deu certo: deixou o código mais limpo, com mais facilidade de manutenção, mais legível e continua com o comportamento esperado pelo negócio.
+
+O TDD é uma prática que, inicialmente, parece exagero. Mas ajuda muito no design da sua solução. Inclusive, eu, enquanto escrevia esse código e esses testes, errei várias vezes e foram os testes que me ajudaram a perceber os meus erros. E essa prática vai muito mais além disso: um bom livro para se aprofundar é o Test Driven Development by Example, do Kent Back (https://www.amazon.com.br/Test-Driven-Development-Kent-Beck/dp/0321146530/ref=asc_df_0321146530/?tag=googleshopp00-20&linkCode=df0&hvadid=379787788238&hvpos=&hvnetw=g&hvrand=5412242682766184565&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1001566&hvtargid=pla-448095042394&psc=1).
+
+## Desafio
+
+Agora é com vocês! Além de construir tudo o que fizemos aqui, tentem agora agregar uma nova funcionalidade ao nosso banco utilizando tudo que aprendemos até aqui, inclusive o TDD!
+
+A nova funcionalidade é a seguinte: nosso banco cresceu, e agora faz transferências internacionais. Mas para que ela seja feita, existem algumas regras:
+- Não é possível transferir menos que 1000 "dinheiros".
+- Não é possível transferir mais que 9999 "dinheiros",
+- Existe uma taxa fixa de 100 "dinheiros" para cada transferência
+- Se a transferência for entre 1000 e 5000, existe uma taxa 5% do valor a ser transferido, além da taxa fixa
+- Se a transferência for acima de 5001 "dinheiros", a taxa é de 10%, além da taxa fixa.
+
+
+Tentem ao máximo escrever um código legível, com variáveis e funções descritivas além de, obviamente, utilizar o TDD com testes unitários. E isso é para o bem de vocês, pois é sobre esse código que vamos agregar ainda mais funcionalidades nas próximas aulas!
 
 
