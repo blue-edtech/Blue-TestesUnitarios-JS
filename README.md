@@ -61,7 +61,7 @@ Crie essa pasta na raiz do seu projeto.
 ## Construindo nossos primeiros testes unitários
 Em um novo arquivo chamado `calculator.js`, vamos construir a função de soma de dois valores. Para facilitar este exemplo, consideraremos que a calculadora aceita somente números inteiros.
 ```javascript
-function sum(a, b) {
+export function sum(a, b) {
     return a + b;
 }
 ```
@@ -256,16 +256,14 @@ expect(updatedAccounts[1].balance).toBe(500);
 
 Por estarmos tratando de `arrays`, existem outras formas mais legíveis e práticas de fazermos as checagens de resultados (`asserts`), principalmente porque não necessariamente podemos garantir a ordem dos elementos deste `array`. Por exemplo:
 ```javascript
-expect(updatedAccounts).toHaveLength(2);
+    expect(updatedAccounts).toHaveLength(2);
 
-expect(updatedAccounts).toEqual(
-    expect.arrayContaining([
-        expect.objectContaining(
-            { id: 2, balance: 500 },
+    expect(updatedAccounts).toEqual(
+        expect.arrayContaining([
+            expect.objectContaining({ id: 2, balance: 500 }),
             expect.objectContaining({ id: 1, balance: 500 })
-        )
-    ])
-);
+        ])
+    );
 ```
 Podemos rodar os testes somente do arquivo `transfer.spec.js`, com o comando:
 ```bash
@@ -285,10 +283,8 @@ test("it should transfer 50 from an account with 100 to another with 600", () =>
 
     expect(updatedAccounts).toEqual(
         expect.arrayContaining([
-            expect.objectContaining(
-                { id: 2, balance: 500 },
-                expect.objectContaining({ id: 1, balance: 500 })
-            )
+            expect.objectContaining({ id: 2, balance: 650 }),
+            expect.objectContaining({ id: 1, balance: 50 })
         ])
     );
 });
@@ -527,7 +523,7 @@ test('it should charge 100 from the payer account with 2000 for a 100 transfer t
         expect.arrayContaining([
             expect.objectContaining({ id: 1, balance: 1800 }),
             expect.objectContaining({ id: 2, balance: 1100 }),
-        ]);
+        ])
     );
 });
 ```
