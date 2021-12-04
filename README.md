@@ -466,7 +466,7 @@ No entanto, propositalmente, inserimos um erro nessa refatoração.
 Rode os testes com o seguinte comando:
 
 ```bash
-`npm test __tests__/transferWithTax.spec.js
+npm test __tests__/transferWithTax.spec.js
 ```
 
 E temos o seguinte resultado:
@@ -476,8 +476,7 @@ Expected: ArrayContaining [ObjectContaining {"balance": 500, "id": 1}, ObjectCon
 Received: [{"balance": 500, "id": 1}, {"balance": 500, "id": 1}]
 ```
 
-Esse é o relatório que o `jest` nos trouxe:
-
+Esse é o relatório que o jest nos trouxe.
 A conta recebedora da transferência deveria estar com 400 "dinheiros", mas nossa função retornou que ela está com 500.
 
 #### Corrigindo possíveis erros
