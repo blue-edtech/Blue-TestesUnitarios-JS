@@ -308,7 +308,7 @@ Vamos, primeiramente, ver como criar esse teste, usando o já conhecido `mockImp
 Ao perceber que esse teste falhou, vamos implementar este bloco de código na nossa função `transferMoney`:
 
 ```javascript
-    try{
+    try {
         validateAmountLimit(transferAmount)
     } catch (amountLimitInvalidError) {
         console.log(amountLimitInvalidError.message)
@@ -316,6 +316,64 @@ Ao perceber que esse teste falhou, vamos implementar este bloco de código na no
 ```
 
 E pronto! Os testes agora devem estar passando e adicionamos mais um comportamento na nossa aplicação. Testar a reação aos erros é bastante esquecido mas igualmente importante.
+
+## Mais uma forma de mockar: spyOn
+
+Uma última forma que o jest permite criar mocks é criando um "espião" para a função ou módulo que você quer testar. A maior diferença é que o `spyOn` não altera a implementação do que ele estiver "mockando" (a não ser que você queira).
+Um exemplo com nosso teste de validação, utilizando spyOn, ficaria da seguinte forma (sugiro replicar o teste para não perder o que já foi feito):
+
+```javascript
+    test("it should validate payer balance and transfer amount (spy test)", () => {
+
+        const payerId = 1
+        const receiverId = 2
+        const transferAmount = 1000
+        const payerInitialBalance = 10000
+
+        const validateAmountLimitSpy = jest.spyOn(validations, "validateAmountLimit");
+        const validatePayerAmountSpy = jest.spyOn(validations, "validatePayerAmount");
+
+        transferMoney(payerId, receiverId, transferAmount)
+
+        expect(validateAmountLimitSpy).toHaveBeenCalledWith(transferAmount);
+        expect(validatePayerAmountSpy).toHaveBeenCalledWith(payerInitialBalance, transferAmount, 150);
+
+    });
+```
+
+Nesse teste, o código vai executar a implementação real dos métodos de validação e, por isso, é melhor utilizarmos o sufixo `spy` para este tipo de """"mock"""". O `spyOn` só é considerado um mock pois podemos verificar se a uma certa função foi chamada e são nessas condições que ele deve ser utilizado: quando você, por algum motivo, precisa verificar chamadas de função, mas não quer deixar de executar a implementação real das funções "espionadas".
+
+## Mockando funções do javascript
+Outra facilidade que o jest oferece é você poder mockar chamadas do próprio javascript. Não sei se vocês repararam, mas fizemos isso no nosso teste de comportamento de parâmetros inválidos com o `console.log`:
+
+```javascript
+    test("it should log in console when amount limit is invalid", () => {
+
+        console.log = jest.fn();
+
+        const payerId = 1
+        const receiverId = 2
+        const transferAmount = 1000
+
+        validations.validateAmountLimit = jest.fn().mockImplementation(() => { throw new Error("erro") })
+        validations.validatePayerAmount = jest.fn();
+
+        transferMoney(payerId, receiverId, transferAmount)
+
+        expect(console.log).toHaveBeenCalledWith("erro");
+
+    });
+```
+
+E isso pode ser útil em diversas situações, como por exemplo quando precisamos validar a data atual. Se não utilizarmos um mock, o teste falharia no dia seguinte pois o retorno de `Date.now()` já seria outro. Vamos criar um teste de exemplo:
+
+```javascript
+    test("it should test a mock of current date", () => {
+        Date.now = jest.fn().mockReturnValue("2017-01-01")
+
+        expect(Date.now()).toBe("2017-01-01")
+    });
+```
 
 ## Conclusão e discussão sobre Testes "Mockistas" x Testes "Classistas"
 
@@ -326,6 +384,12 @@ Mas no caso de `validations`, utilizar mocks torna-se um pouco mais questionáve
 
 Finalmente, a questão de usar muitos mocks ou não fica bastante a critério dos padrões de código da aplicação ou do seu time. Minha opinião é que, como diversas outras, mocks são uma estratégia que podem ser usadas em diversas situações e não deve ser considerado uma bala de prata que vai facilitar a criação de todos os seus testes unitários. Embora agregue redundâncias, muitas vezes criar um teste mockista custa muito mais tempo do que um classista, além das desvantagens mencionadas que ele traz naturalmente.
 
-
-
-
+## Desafio
+ Nosso desafio agora é criar uma loja virtual em um novo projeto com algumas regras de negócio. Essa loja conta com um banco de dados (que pode ser representado por mocks) que contém o identificador de cada produto (id), seu nome, seu preço e sua quantidade em estoque.
+ Além disso, a loja está em promoção! 
+ Levando dois produtos, vc ganha 10% de desconto. Caso leve 3 ou mais, o desconto passa para 20% e esse é o máximo que o desconto pode chegar.
+ Além da soma dos preços dos produtos com desconto, a loja também cobra frente nas compras abaixo de R$100,00.
+ Para calcular o frete, você pode utilizar essa API pública: https://viacep.com.br/ws/30350040/json/ e substituir o valor numérico pelo CEP do cliente. Para qualquer país fora do sudeste, será cobrado um frete de R$25,00 (mas apenas para compras abaixo de R$100,00). Mas lembre-se que aqui também vale utilizar mocks para seus testes.
+ Sua aplicação então deve calcular o preço final da compra baseando-se em duas variáveis: o CEP do cliente e um vetor com os IDs dos produtos que ele ou ela estão comprando.
+ Tentem utilizar o TDD junto com os mocks, refatore bastante quando seus testes estiverem verdes, crie funções e arquivos com poucas responsabilidades para tornar a criação de testes unitários mais fácil.
+ Boa sorte!

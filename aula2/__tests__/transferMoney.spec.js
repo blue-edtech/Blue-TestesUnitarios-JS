@@ -66,4 +66,30 @@ describe("transferMoney", () => {
         expect(console.log).toHaveBeenCalledWith("erro");
 
     });
+
+    test("it should validate payer balance and transfer amount (spy test)", () => {
+
+        const payerId = 1
+        const receiverId = 2
+        const transferAmount = 1000
+        const payerInitialBalance = 10000
+
+        const validateAmountLimitSpy = jest.spyOn(validations, "validateAmountLimit");
+        const validatePayerAmountSpy = jest.spyOn(validations, "validatePayerAmount");
+
+        transferMoney(payerId, receiverId, transferAmount)
+
+        expect(validateAmountLimitSpy).toHaveBeenCalledWith(transferAmount);
+        expect(validatePayerAmountSpy).toHaveBeenCalledWith(payerInitialBalance, transferAmount, 150);
+
+        validateAmountLimitSpy.mockRestore()
+        validatePayerAmountSpy.mockRestore()
+    });
+
+    test("it should test a mock of current date", () => {
+        Date.now = jest.fn().mockReturnValue("2017-01-01")
+
+        expect(Date.now()).toBe("2017-01-01")
+    });
+
 });
