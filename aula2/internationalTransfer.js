@@ -1,17 +1,22 @@
 import { Account } from "./account";
 
 export function internationalTransfer(payer, receiver, transferAmount) {
-    validateAmountLimit(transferAmount)
+    validateAmountLimit(transferAmount);
 
-    const tax = calculateTax(transferAmount)
+    const tax = calculateTax(transferAmount);
 
-    validatePayerAmount(payer, transferAmount, tax)
+    validatePayerAmount(payer, transferAmount, tax);
 
-    const updatedPayerAccount = new Account(payer.id, payer.balance - transferAmount - tax)
-    const updatedReceiverAccount = new Account(receiver.id, receiver.balance + transferAmount)
+    const updatedPayerAccount = new Account(
+        payer.id,
+        payer.balance - transferAmount - tax
+    );
+    const updatedReceiverAccount = new Account(
+        receiver.id,
+        receiver.balance + transferAmount
+    );
 
-    return [updatedPayerAccount, updatedReceiverAccount]
-
+    return [updatedPayerAccount, updatedReceiverAccount];
 }
 
 function validateAmountLimit(transferAmount) {
@@ -27,9 +32,9 @@ function validatePayerAmount(payer, transferAmount, tax) {
 }
 
 function calculateTax(amount) {
-    const fixedTax = 100
+    const fixedTax = 100;
     if (amount <= 5000) {
-        return amount * 0.05 + fixedTax
+        return amount * 0.05 + fixedTax;
     }
-    return amount * 0.1 + fixedTax
+    return amount * 0.1 + fixedTax;
 }

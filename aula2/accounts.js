@@ -1,3 +1,3 @@
 export function getAccount(id) {
-    return undefined
+    return undefined;
 }
