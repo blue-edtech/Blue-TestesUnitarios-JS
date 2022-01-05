@@ -13,9 +13,11 @@ describe("transferMoney", () => {
             .mockImplementationOnce(payerId => new Account(payerId, 10000))
             .mockImplementationOnce(receiverId => new Account(receiverId, 0));
     });
+
     afterEach(() => {
         accounts.getAccount.mockClear();
     });
+
     test("it should charge payer with 5% of tax plus fixed tax of 100 when transfering ana mount between 1000 and 5000", () => {
         const updatedAccounts = transferMoney(payerId, receiverId, 1000);
 
@@ -31,6 +33,7 @@ describe("transferMoney", () => {
             ])
         );
     });
+
     test("it should validate payer balance and transfer amount", () => {
         const payerId = 1;
         const receiverId = 2;
@@ -45,6 +48,7 @@ describe("transferMoney", () => {
         expect(validations.validateAmountLimit).toHaveBeenCalledWith(
             transferAmount
         );
+
         expect(validations.validatePayerAmount).toHaveBeenCalledWith(
             payerInitialBalance,
             transferAmount,
@@ -62,6 +66,7 @@ describe("transferMoney", () => {
         validations.validateAmountLimit = jest.fn().mockImplementation(() => {
             throw new Error("erro");
         });
+
         validations.validatePayerAmount = jest.fn();
 
         transferMoney(payerId, receiverId, transferAmount);
@@ -79,6 +84,7 @@ describe("transferMoney", () => {
             validations,
             "validateAmountLimit"
         );
+
         const validatePayerAmountSpy = jest.spyOn(
             validations,
             "validatePayerAmount"

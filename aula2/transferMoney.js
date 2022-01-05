@@ -20,6 +20,7 @@ export function transferMoney(payerId, receiverId, transferAmount) {
         payerId,
         payer.balance - transferAmount - tax
     );
+
     const updatedReceiverAccount = new Account(
         receiverId,
         receiver.balance + transferAmount
