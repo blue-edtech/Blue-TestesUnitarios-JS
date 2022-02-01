@@ -1,5 +1,7 @@
 # Testes Unitários com JavaScript e Jest (Parte 2): Testando aplicações com mocks e stubs
 
+{% embed url="https://www.youtube.com/watch?v=rBtxHAcXSGI" %}
+
 Nenhuma aplicação de mercado será tão simples quando a calculadora ou o banco que estamos criando nas nossas aulas.
 
 Com certeza elas terão que acessar bancos de dados e outros serviços para consultar ou executar comandos relacionados às suas funcionalidades.

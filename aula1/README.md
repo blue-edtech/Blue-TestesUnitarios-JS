@@ -1,5 +1,7 @@
 # Testes Unitários com JavaScript e Jest
 
+{% embed url="https://www.youtube.com/watch?v=8Qy_1Lzd-l8" %}
+
 Testes unitários são testes que validam pequenas unidades lógicas e regras de negócio da sua aplicação de forma simples e automatizada.
 
 São uma prática essencial para todo e qualquer sistema, pois garantem que seu código está sendo construído com qualidade, e proporcionam uma segurança mínima e necessária para a evolução e melhoria contínua da sua aplicação.
