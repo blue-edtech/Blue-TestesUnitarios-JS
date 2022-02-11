@@ -1,4 +1,4 @@
-# Aula 3 - \[AULA] Casos de borda e TDD
+# Aula 3 - Casos de borda e TDD
 
 {% embed url="https://youtu.be/lEHRiBuL-UQ" %}
 

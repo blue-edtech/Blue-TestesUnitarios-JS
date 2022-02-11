@@ -1,3 +1,5 @@
+# Aula 6 - Quando usar ou não usar mocks?
+
 E isso pode ser útil em diversas situações, como por exemplo quando precisamos validar a data atual. Se não utilizarmos um mock, o teste falharia no dia seguinte pois o retorno de `Date.now()` já seria outro. Vamos criar um teste de exemplo:
 
 ```javascript

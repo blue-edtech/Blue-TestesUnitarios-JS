@@ -1,4 +1,4 @@
-# Testes Unitários com JavaScript e Jest (Parte 2): Testando aplicações com mocks e stubs.
+# Aula 4 - Testando aplicações com mocks e stubs
 
 Nenhuma aplicação de mercado será tão simples quando à calculadora ou ao banco que estamos criando nas nossas aulas. Elas, com certeza, terão que acessar bancos de dados e outros serviços para consultar ou executar comandos relacionadoss às suas funcionalidades. Exemplo: na nossa função de transferência do banco, provavelmente teríamos que buscar as informações das contas em um serviço externo e escrever num banco de dados os novos saldos de cada um.
 
