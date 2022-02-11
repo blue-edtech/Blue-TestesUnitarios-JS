@@ -1,4 +1,4 @@
-# Aula 2 - Vamos configurar a biblioteca e implementar nossos primeiros testes
+# Aula 2 - Configurando a biblioteca e primeiros testes
 
 {% embed url="https://youtu.be/y2IrE2FYl3k" %}
 

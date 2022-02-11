@@ -22,16 +22,16 @@ Logo, tenham em mente que a criação de testes unitários é imprescindível pa
 
 ## O que teremos neste curso?
 
-![Objetivo e Metodologia](images\image-20220211132438391.png)
+![Objetivo e Metodologia](images/image-20220211132438391.png)
 
-![Introdução](C:\Users\paulo\AppData\Roaming\Typora\typora-user-images\image-20220211132420203.png)
+![Introdução](images/image-20220211132420203.png)
 
-![Motivação e Conceito](images\image-20220211132510716.png)
+![Motivação e Conceito](images/image-20220211132510716.png)
 
-![Práticas de qualidade de código](images\image-20220211132548136.png)
+![Práticas de qualidade de código](images/image-20220211132548136.png)
 
-![WTFs/minute](images\image-20220211132616196.png)
+![WTFs/minute](images/image-20220211132616196.png)
 
-![Gráfico - Entrega x Tempo](images\image-20220211132632506.png)
+![Gráfico - Entrega x Tempo](images/image-20220211132632506.png)
 
-![Mão na massa!](images\image-20220211132742056.png)
+![Mão na massa!](images/image-20220211132742056.png)
