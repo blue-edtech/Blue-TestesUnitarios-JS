@@ -1,11 +1,15 @@
-## Casos de borda
+# Aula 3 - \[AULA] Casos de borda e TDD
+
+{% embed url="https://youtu.be/lEHRiBuL-UQ" %}
+
+### Casos de borda
 
 Casos de borda são cenários que extrapolam o previsível e o que consideramos "básico".
 
 É sempre preciso pensar fora da caixa e entender que podem acontecer comportamentos inesperados com nossas funções dependendo do seu comportamento e dos parâmetros que ela recebe. Por exemplo:
 
-- Faz sentido uma conta ter um valor negativo de saldo?
-- Ou transferir um valor negativo de uma conta para outra?
+* Faz sentido uma conta ter um valor negativo de saldo?
+* Ou transferir um valor negativo de uma conta para outra?
 
 A forma que nossa função se comporta nesses casos deve estar explícita tanto nas regras de negócio descritas na aplicação, quanto nos testes unitários. Por exemplo:
 
@@ -39,7 +43,7 @@ test('it should throw an error when transfer amount is negative', () => {
 
 E acabamos de chegar em outro caso de borda bastante comum em diversas aplicações:
 
->  **Será que faz sentido transferirmos o valor 0 de uma conta para outra?**
+> **Será que faz sentido transferirmos o valor 0 de uma conta para outra?**
 
 Pensando que estamos construindo um banco, seria um processamento desnecessário, pois não fará qualquer diferença para nenhuma das contas.
 
@@ -62,12 +66,13 @@ Como na lógica da nossa função decidimos optar pela condicional `if amount > 
 
 Mas, se optássemos por um `>=` (maior ou igual), o teste falharia, pois é uma regra da aplicação não realizar transferências de valor `0`.
 
-## Test Driven Development (TDD)
+### Test Driven Development (TDD)
+
 TDD, ou desenvolvimento orientado a testes, é uma prática de qualidade de código vista com muito bons olhos no mercado. Ela, através de testes unitários, contribui para a criação de um código mais limpo, legível e sustentável.
 
 A ideia é, antes de qualquer coisa, criar um teste unitário de alguma regra de negócio específica e assistir ele falhar propositalmente. Na sequência, você irá começar a desenvolver sua função baseada nesse teste.
 
-### Exemplo de TDD
+#### Exemplo de TDD
 
 Vamos exemplificar para facilitar:
 
@@ -118,12 +123,12 @@ npm test __tests__/transferWithTax.spec.js
 
 Ao executar o comando, percebemos que o teste falhou e é essa a primeira parte do TDD: **criar um micro-objetivo (teste unitário) que falhe**.
 
-#### Fazendo o teste passar
+**Fazendo o teste passar**
 
 A próxima etapa agora é fazer esse teste passar:
 
-- Deixe TUDO de lado e preocupe-se unicamente em fazer esse teste passar, da forma que for, sem se preocupar com legibilidade, design ou boas práticas (pode confiar).
-- Podem ignorar outras regras de negócio, casos de borda e complexidades.
+* Deixe TUDO de lado e preocupe-se unicamente em fazer esse teste passar, da forma que for, sem se preocupar com legibilidade, design ou boas práticas (pode confiar).
+* Podem ignorar outras regras de negócio, casos de borda e complexidades.
 
 Sendo bem pragmático e seguindo o TDD "by the book" (no dia a dia, não necessariamente precisamos fazer desse jeito), podemos fazer o teste passar da seguinte forma:
 
@@ -137,7 +142,7 @@ Sim, isso mesmo, retornamos exatamente o que o teste espera.
 
 O TDD serve para você reduzir o seu problema em micro objetivos que, quando totalmente concluídos, resolvem o problema como um todo.
 
-#### Refatoração
+**Refatoração**
 
 Agora, nós vamos para a terceira parte do TDD: **a refatoração**.
 
@@ -176,10 +181,9 @@ Expected: ArrayContaining [ObjectContaining {"balance": 500, "id": 1}, ObjectCon
 Received: [{"balance": 500, "id": 1}, {"balance": 500, "id": 1}]
 ```
 
-Esse é o relatório que o jest nos trouxe.
-A conta recebedora da transferência deveria estar com 400 "dinheiros", mas nossa função retornou que ela está com 500.
+Esse é o relatório que o jest nos trouxe. A conta recebedora da transferência deveria estar com 400 "dinheiros", mas nossa função retornou que ela está com 500.
 
-#### Corrigindo possíveis erros
+**Corrigindo possíveis erros**
 
 Algo deu errado na nossa refatoração, conseguem descobrir o que é?
 
@@ -203,11 +207,9 @@ A etapa de refatoração é muito importante, pois, como já falamos anteriormen
 
 E, assim, fechamos o ciclo do TDD e iniciamos a primeira etapa da prática: escrever um teste válido que falhe ao ser executado, como na imagem:
 
-
-
 ![Ciclo do TDD](images/tdd.png)
 
-#### Escrevendo um novo caso de teste
+**Escrevendo um novo caso de teste**
 
 Agora, retornamos ao início e escrevemos mais um teste para nossa funcionalidade:
 
@@ -276,7 +278,7 @@ Inclusive, eu, enquanto escrevia esse código e esses testes, errei várias veze
 
 Essa prática vai muito mais além disso: um bom livro para se aprofundar é o [Test Driven Development by Example, do Kent Back](https://www.oreilly.com/library/view/test-driven-development/0321146530/).
 
-## Desafio
+### Desafio
 
 Agora é com vocês! 🥳
 
@@ -288,12 +290,12 @@ A nova funcionalidade é a seguinte:
 
 Porém, para que ela seja feita, existem algumas regras:
 
-- Não é possível transferir menos que `1000` "dinheiros";
-- Não é possível transferir mais que `9999` "dinheiros";
-- Não é possível transferir uma quantidade (dinheiro a ser transferido + taxas) maior do que o saldo atual do pagador
-- Existe uma taxa fixa de `100` "dinheiros" para cada transferência;
-- Se a transferência for entre `1000` e `5000`, existe uma taxa `5%` do valor a ser transferido, além da taxa fixa;
-- Se a transferência for acima de `5001` "dinheiros", a taxa é de `10%`, além da taxa fixa.
+* Não é possível transferir menos que `1000` "dinheiros";
+* Não é possível transferir mais que `9999` "dinheiros";
+* Não é possível transferir uma quantidade (dinheiro a ser transferido + taxas) maior do que o saldo atual do pagador
+* Existe uma taxa fixa de `100` "dinheiros" para cada transferência;
+* Se a transferência for entre `1000` e `5000`, existe uma taxa `5%` do valor a ser transferido, além da taxa fixa;
+* Se a transferência for acima de `5001` "dinheiros", a taxa é de `10%`, além da taxa fixa.
 
 Tentem escrever um código legível, com variáveis e funções descritivas, além de, obviamente, utilizar o TDD com testes unitários.
 

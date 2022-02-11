@@ -1,8 +1,12 @@
-## Configuração do projeto
+# Aula 2 - \[AULA] Vamos configurar a biblioteca e implementar nossos primeiros testes
+
+{% embed url="https://youtu.be/y2IrE2FYl3k" %}
+
+### Configuração do projeto
 
 Vamos utilizar JavaScript puro e uma biblioteca chamada `jest` para os testes unitários.
 
-Nossa primeira missão vai ser construir uma **calculadora** com as operações de `somar`, `subtrair`, `multiplicar` e `dividir`. 
+Nossa primeira missão vai ser construir uma **calculadora** com as operações de `somar`, `subtrair`, `multiplicar` e `dividir`.
 
 Crie uma pasta para o projeto, em algum local de sua preferência.
 
@@ -11,11 +15,13 @@ Abra-a em algum terminal e inicialize o projeto NodeJS, com o comando a seguir, 
 ```bash
 npm init -y
 ```
+
 Agora, precisamos instalar a biblioteca `jest`. Para isso, digite o seguinte comando:
 
 ```bash
 npm i jest --save-dev
 ```
+
 O argumento `--save-dev` é para deixar claro que essa biblioteca não faz parte do seu código de produção e será utilizada somente nos ambientes de desenvolvimento. Assim, seu artefato final fica mais leve, pois qualquer biblioteca instalada com esse argumento será removida.
 
 Agora, precisamos configurar um comando que, quando executado, vai rodar todos os seus testes unitários e verificar se há algum erro com a sua lógica.
@@ -32,14 +38,17 @@ Por padrão, o Jest executa os testes dentro da pasta `__tests__`.
 
 Crie essa pasta na raiz do seu projeto.
 
-## Construindo nossos primeiros testes unitários
+### Construindo nossos primeiros testes unitários
+
 Em um novo arquivo chamado `calculator.js`, vamos construir a função de soma de dois valores. Para facilitar este exemplo, consideraremos que a calculadora aceita somente números inteiros.
+
 ```javascript
 export function sum(a, b) {
     return a + b;
 }
 ```
-### Primeiro caso de teste
+
+#### Primeiro caso de teste
 
 Agora, vamos construir um teste unitário para essa função.
 
@@ -60,16 +69,18 @@ describe("calculator sum", () => {
   });
 });
 ```
+
 Para melhor organização dos nossos testes, utilizamos duas palavras-chave, `describe` e `test`.
 
-- `describe` serve para mostrar qual função estamos testando naquele conjunto de testes;
-- `test` serve para explicitar de fato o que está sendo testado e o comportamento esperado.
+* `describe` serve para mostrar qual função estamos testando naquele conjunto de testes;
+* `test` serve para explicitar de fato o que está sendo testado e o comportamento esperado.
 
 Agora, executando o comando `npm test`, vamos verificar que nosso teste passou e podemos seguir em frente.
 
-### Erro ao executar o Jest
+#### Erro ao executar o Jest
 
 Em alguns casos, é possível aparecer o seguinte erro:
+
 ```
  Jest encountered an unexpected token
 
@@ -78,11 +89,12 @@ Em alguns casos, é possível aparecer o seguinte erro:
     Out of the box Jest supports Babel, which will be used to transform your files into valid JS based on your Babel configuration.
     ...
 ```
+
 Se estiver acontecendo com você, siga o seguinte tutorial para resolvê-lo:
 
 https://newbedev.com/jest-syntaxerror-cannot-use-import-statement-outside-a-module]
 
-### Segundo caso de teste
+#### Segundo caso de teste
 
 Agora, vamos criar um segundo caso de teste somando um número negativo.
 
@@ -98,7 +110,8 @@ test("it should sum numbers with a negative value", () => {
 });
 ```
 
-## E quando um teste falha?
+### E quando um teste falha?
+
 Vamos adicionar a função de subtrair na nossa calculadora e, por um descuido (proposital), errar a lógica da função.
 
 Então, no arquivo `calculator.js`.
@@ -111,13 +124,14 @@ export function subtract(a, b) {
 
 E o teste, em um outro `describe`, no `calculator.spec.js`, abaixo do segundo fechamento de chaves e parênteses `})`.
 
->  **Importante ❗❗:** Não se esqueça de adicionar no import, no topo do arquivo de teste, a função `subtract` ao lado de `sum` separado por uma `,`
+> **Importante ❗❗:** Não se esqueça de adicionar no import, no topo do arquivo de teste, a função `subtract` ao lado de `sum` separado por uma `,`
 
 ```javascript
 import { sum, subtract } from '../calculator.js';
 ```
 
 E o teste:
+
 ```javascript
 describe("calculator subtract", () => {
     test("it should subtract two positive values", () => {
@@ -128,6 +142,7 @@ describe("calculator subtract", () => {
   });
 });
 ```
+
 Observe que, no terminal, o `jest` exibe um relatório bem preciso do que está errado:
 
 ```
@@ -147,7 +162,7 @@ calculator sum
 
 Corrija o erro de lógica e rode os testes novamente antes de continuarmos.
 
-## Vamos complicar um pouco mais
+### Vamos complicar um pouco mais
 
 Agora, vamos imaginar que trabalhamos num banco e temos que desenvolver a funcionalidade de transferência bancária.
 
@@ -206,7 +221,7 @@ describe("transfer", () => {
 Testes unitários, por padrão, são estruturados da seguinte forma:
 
 1. **Criação do cenário de teste:** prepara o terreno e simula uma situação real.
-   - No nosso caso, era como se tivéssemos, em nosso banco de dados, duas contas com `ID` `1` e `2` e valores `R$1000` e `R$0`.
+   * No nosso caso, era como se tivéssemos, em nosso banco de dados, duas contas com `ID` `1` e `2` e valores `R$1000` e `R$0`.
 2. **Execução da função que está sendo testada**
 3. **Asserts**: checagem dos resultados
 
@@ -229,6 +244,7 @@ expect(updatedAccounts[1].balance).toBe(500);
 ```
 
 Por estarmos tratando de `arrays`, existem outras formas mais legíveis e práticas de fazermos as checagens de resultados (`asserts`), principalmente porque não necessariamente podemos garantir a ordem dos elementos deste `array`. Por exemplo:
+
 ```javascript
     expect(updatedAccounts).toHaveLength(2);
 
@@ -239,7 +255,9 @@ Por estarmos tratando de `arrays`, existem outras formas mais legíveis e práti
         ])
     );
 ```
+
 Podemos rodar os testes somente do arquivo `transfer.spec.js`, com o comando:
+
 ```bash
 npm test __tests__/transfer.spec.js
 ```
