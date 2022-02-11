@@ -1,5 +1,7 @@
 # Aula 4 - Testando aplicações com mocks e stubs
 
+{% embed url="https://youtu.be/Jh8lPW3QUoE" %}
+
 Nenhuma aplicação de mercado será tão simples quando à calculadora ou ao banco que estamos criando nas nossas aulas. Elas, com certeza, terão que acessar bancos de dados e outros serviços para consultar ou executar comandos relacionadoss às suas funcionalidades. Exemplo: na nossa função de transferência do banco, provavelmente teríamos que buscar as informações das contas em um serviço externo e escrever num banco de dados os novos saldos de cada um.
 
 Os testes unitários, por serem os mais baratos e básicos de todos, é desaconselhado criar um banco de dados ou um serviço externo localmente somente para eles. Por esses e outros motivos, utilizamos os chamados **mocks e stubs**.
@@ -28,7 +30,7 @@ export function transferMoney(payerId, receiverId, transferAmount) {
 }
 ```
 
-E também criamos o arquivo `accounts.js` na mesma pasta, retornando um método `getAccount(id)` retornando `undefined`. 
+E também criamos o arquivo `accounts.js` na mesma pasta, retornando um método `getAccount(id)` retornando `undefined`.
 
 ```javascript
 export function getAccount(id) {
@@ -38,9 +40,10 @@ export function getAccount(id) {
 
 Essa seria nossa função de acesso ao banco de dados, mas como estamos testando unitariamente, não queremos que nosso teste entre em outros módulos e funções. Queremos testar somente a função `transferMoney`. Por isso chamamos de teste unitário: a ideia é testar uma unidade lógica e não testar a integração de todos os nossos módulos e funções. Para isso vamos então entender o que são os **stubs**.
 
- **Importante ❗❗:** A palavra `mock` popularizou-se mais que a palavra `stub`. Então é comum hoje, no mercado, usar o nome mock para tudo (inclusive o próprio jest não trabalha com a palavra stub)
+**Importante ❗❗:** A palavra `mock` popularizou-se mais que a palavra `stub`. Então é comum hoje, no mercado, usar o nome mock para tudo (inclusive o próprio jest não trabalha com a palavra stub)
 
 ## Stubs (ou "mocks")
+
 São formas de você simular retornos de funções existentes de acordo com certos parâmetros. Vamos fazer um teste, primeiro, sem utilizar o stubs da nossa transferência:
 
 ```javascript
@@ -65,7 +68,7 @@ describe("transferMoney", () => {
 });
 ```
 
-Ao rodar esse teste com o comando `npm test __tests__/transferMoney.spec.js`, observe o que diz o relatório de erros: 
+Ao rodar esse teste com o comando `npm test __tests__/transferMoney.spec.js`, observe o que diz o relatório de erros:
 
 ```shell
 TypeError: Cannot read property 'balance' of `undefined`
@@ -82,6 +85,7 @@ import * as accounts from "../accounts";
 ```
 
 E agora ao teste:
+
 ```javascript
 test("it should charge payer with 5% of tax plus fixed tax of 100 when transfering ana mount between 1000 and 5000", () => {
 
@@ -106,6 +110,7 @@ test("it should charge payer with 5% of tax plus fixed tax of 100 when transferi
 ```
 
 Destaque para o bloco de código:
+
 ```javascript
 const payerId = 1
 const receiverId = 2
@@ -115,9 +120,9 @@ accounts.getAccount = jest.fn()
     .mockReturnValueOnce(new Account(receiverId, 0))
 ```
 
-A primeira linha usa o `jest.fn()` para criar o mock. A segunda linha `.mockReturnValueOnce(new Account(payerId, 10000))` está mockando *apenas uma vez* a função `getAccount(id)`. A terceira linha, cria mais um mock para a função, agora retornando a conta do recebedor. Repare que a ordem dos mocks faz toda diferença, caso ela seja trocada, o teste não passaria pois ele devolveria a conta do recebedor primeiro.
+A primeira linha usa o `jest.fn()` para criar o mock. A segunda linha `.mockReturnValueOnce(new Account(payerId, 10000))` está mockando _apenas uma vez_ a função `getAccount(id)`. A terceira linha, cria mais um mock para a função, agora retornando a conta do recebedor. Repare que a ordem dos mocks faz toda diferença, caso ela seja trocada, o teste não passaria pois ele devolveria a conta do recebedor primeiro.
 
-**Importante ❗❗:** Desenvolvendo o teste com mocks, isolamos completamente a lógica do método `getAccount` e a principal vantagem disso é que, se por um acaso, um bug for introduzido no método `getAccount`, ele não vai interferir nos testes *unitários* do módulo `transferMoney.js`. Esse bug afetaria somente os testes do próprio módulo `accounts`
+**Importante ❗❗:** Desenvolvendo o teste com mocks, isolamos completamente a lógica do método `getAccount` e a principal vantagem disso é que, se por um acaso, um bug for introduzido no método `getAccount`, ele não vai interferir nos testes _unitários_ do módulo `transferMoney.js`. Esse bug afetaria somente os testes do próprio módulo `accounts`
 
 ## Outros tipos de mock
 
@@ -133,4 +138,4 @@ accounts.getAccount = jest.fn()
 
 O `mockImplementationOnce` muda a implementação da função completamente. É como se a minha função `getAccount` agora tenha se tornado a função que coloco como parâmetro desse mock. Às vezes precisamos que o mock não apenas retorne um valor, mas também execute algum trecho de código. E é para isso que serve essa forma de mockar.
 
-**Importante ❗❗:** Tanto o `mockReturnValueOnce` como o `mockImplementationOnce` mockam apenas *uma chamada* para aquela função. Isto é, se houvesse uma terceira chamada ao `getAccount`, o fluxo de código iria para a implementação real da função. Em muitas situações, podemos eliminar o sufixo `Once` e usar simplesmente `mockReturnValue` ou `mockImplementation`. Dessa forma ele cria um mock que sempre vai retornar aquele valor, independente do número de chamadas. No nosso caso, como temos duas chamadas diferentes para o `getAccount`, precisamos usar o sufixo `Once`.
+**Importante ❗❗:** Tanto o `mockReturnValueOnce` como o `mockImplementationOnce` mockam apenas _uma chamada_ para aquela função. Isto é, se houvesse uma terceira chamada ao `getAccount`, o fluxo de código iria para a implementação real da função. Em muitas situações, podemos eliminar o sufixo `Once` e usar simplesmente `mockReturnValue` ou `mockImplementation`. Dessa forma ele cria um mock que sempre vai retornar aquele valor, independente do número de chamadas. No nosso caso, como temos duas chamadas diferentes para o `getAccount`, precisamos usar o sufixo `Once`.

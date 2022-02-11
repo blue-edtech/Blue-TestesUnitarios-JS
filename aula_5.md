@@ -1,16 +1,20 @@
 # Aula 5 - Explorando os mocks mais a fundo
 
+{% embed url="https://youtu.be/x6NKHoDvh-Q" %}
+
 Todavia, nosso teste ainda pode melhorar. Lembra que precisamos manter nosso código resiliente? Isto é, não permitir que alterações de código introduzam bugs e passem ilesos na nossa suite de testes unitários. Vamos fazer um teste! faça a seguinte alteração na sua nova função `transferMoney.js`:
 
 ```javascript
     const payer = getAccount(5)
     const receiver = getAccount(3)
 ```
+
 Este código alterado está errado pois não considera os parâmetros enviados para a função na hora de buscar pelas contas do banco. Isto é, se esse código for lançado para as pessoas usuárias, qualquer transferência que elas fizerem sairão da conta de ID 5 para a conta de ID 3. Isso é algo que, definitivamente, nossos testes deveriam pegar. Execute-os e veja que todos passam.
 
 Isso acontece porque não estamos especificando os parâmetros que devemos passar para as funções mockadas e elas retornam o que queremos independente desses parâmetros. Antes de partir para a solução desse problema, vamos entender mais um tipo de mock que talvez possa nos ajudar.
 
 ## Mocks para verificar chamadas
+
 É muito comum precisarmos testar que estamos invocando funções e não necessariamente elas vão retornar algo. Para exemplificar esse cenário, vamos extrair nossas funções de validação (que, no meu caso, chamei de `validateAmountLimit` e `validatePayerAmount`) para um outro arquivo `validations.js`
 
 ```javascript
@@ -28,6 +32,7 @@ export function validatePayerAmount(payer, transferAmount, tax) {
 ```
 
 Agora, removemos as funções do arquivo `transferMoney.js` e importamos as funções de validação de `validations.js`
+
 ```javascript
 import { Account } from "./account";
 import { getAccount } from "./accounts";
@@ -150,8 +155,8 @@ describe("transferMoney", () => {
 No `beforeEach`, mockamos as contas que se repetem nos testes e no `afterEach` limpamos o mock para que ele não afete o outros próximos testes (nesse caso, não afetaria, mas é uma boa prática). Outros blocos também importantes que devem ser considerados é o `beforeAll` e `afterAll`: ao invés de executados a cada teste dentro do `describe`, eles vão executar apenas uma vez por suite de testes, no início e no final respectivamente.
 
 ## Como mockar error?
-No nosso novo arquivo `validations.js` lançamos erros caso os parâmetros não sigam certas regras. Outro ponto que é muito importante de ser testado é *como minha função vai reagir se receber um erro?*
-Para isso, vamos criar uma nova regra de negócio e, caso alguma função de `validations` lance um erro para `transferMoney`, devemos imprimir no console a mensagem contida dentro do erro. (Isso é para fins didáticos. Usar console.log não é uma boa prática em aplicações reais)
+
+No nosso novo arquivo `validations.js` lançamos erros caso os parâmetros não sigam certas regras. Outro ponto que é muito importante de ser testado é _como minha função vai reagir se receber um erro?_ Para isso, vamos criar uma nova regra de negócio e, caso alguma função de `validations` lance um erro para `transferMoney`, devemos imprimir no console a mensagem contida dentro do erro. (Isso é para fins didáticos. Usar console.log não é uma boa prática em aplicações reais)
 
 Vamos, primeiramente, ver como criar esse teste, usando o já conhecido `mockImplementation` para substituir a implementação da função de validação para lançar um erro qualquer.
 
@@ -188,8 +193,7 @@ E pronto! Os testes agora devem estar passando e adicionamos mais um comportamen
 
 ## Mais uma forma de mockar: spyOn
 
-Uma última forma que o jest permite criar mocks é criando um "espião" para a função ou módulo que você quer testar. A maior diferença é que o `spyOn` não altera a implementação do que ele estiver "mockando" (a não ser que você queira).
-Um exemplo com nosso teste de validação, utilizando spyOn, ficaria da seguinte forma (sugiro replicar o teste para não perder o que já foi feito):
+Uma última forma que o jest permite criar mocks é criando um "espião" para a função ou módulo que você quer testar. A maior diferença é que o `spyOn` não altera a implementação do que ele estiver "mockando" (a não ser que você queira). Um exemplo com nosso teste de validação, utilizando spyOn, ficaria da seguinte forma (sugiro replicar o teste para não perder o que já foi feito):
 
 ```javascript
     test("it should validate payer balance and transfer amount (spy test)", () => {
@@ -213,6 +217,7 @@ Um exemplo com nosso teste de validação, utilizando spyOn, ficaria da seguinte
 Nesse teste, o código vai executar a implementação real dos métodos de validação e, por isso, é melhor utilizarmos o sufixo `spy` para este tipo de """"mock"""". O `spyOn` só é considerado um mock pois podemos verificar se a uma certa função foi chamada e são nessas condições que ele deve ser utilizado: quando você, por algum motivo, precisa verificar chamadas de função, mas não quer deixar de executar a implementação real das funções "espionadas".
 
 ## Mockando funções do javascript
+
 Outra facilidade que o jest oferece é você poder mockar chamadas do próprio javascript. Não sei se vocês repararam, mas fizemos isso no nosso teste de comportamento de parâmetros inválidos com o `console.log`:
 
 ```javascript
