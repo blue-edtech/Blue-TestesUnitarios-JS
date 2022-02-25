@@ -92,7 +92,7 @@ Em alguns casos, é possível aparecer o seguinte erro:
 
 Se estiver acontecendo com você, siga o seguinte tutorial para resolvê-lo:
 
-https://newbedev.com/jest-syntaxerror-cannot-use-import-statement-outside-a-module]
+https://newbedev.com/jest-syntaxerror-cannot-use-import-statement-outside-a-module
 
 #### Segundo caso de teste
 
