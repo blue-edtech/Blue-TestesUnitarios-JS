@@ -1,6 +1,6 @@
 # Aula 3 - Casos de borda e TDD
 
-{% embed url="https://youtu.be/lEHRiBuL-UQ" %}
+{% embed url="https://youtu.be/9h5YSDIpWv8" %}
 
 ### Casos de borda
 
@@ -67,6 +67,8 @@ Como na lógica da nossa função decidimos optar pela condicional `if amount > 
 Mas, se optássemos por um `>=` (maior ou igual), o teste falharia, pois é uma regra da aplicação não realizar transferências de valor `0`.
 
 ### Test Driven Development (TDD)
+
+{% embed url="https://youtu.be/K4a6yk3hgDQ" %}
 
 TDD, ou desenvolvimento orientado a testes, é uma prática de qualidade de código vista com muito bons olhos no mercado. Ela, através de testes unitários, contribui para a criação de um código mais limpo, legível e sustentável.
 
@@ -162,7 +164,7 @@ export function transferWithTax(payer, receiver, transferAmount) {
 }
 ```
 
-Nessa refatoração, melhoramos a legiblidade do código removendo um code smell (padrão ruim de código) chamado `magic number` (números mágicos), que são números escritos sem contexto no meio do código.
+Nessa refatoração, melhoramos a legibilidade do código removendo um code smell (padrão ruim de código) chamado `magic number` (números mágicos), que são números escritos sem contexto no meio do código.
 
 Ao declararmos eles a variáveis com nomes descritivos, fica mais fácil entender o que cada um desses números significa.
 
@@ -210,6 +212,8 @@ E, assim, fechamos o ciclo do TDD e iniciamos a primeira etapa da prática: escr
 ![Ciclo do TDD](images/tdd.png)
 
 **Escrevendo um novo caso de teste**
+
+{% embed url="https://youtu.be/aAyekj8v_PU" %}
 
 Agora, retornamos ao início e escrevemos mais um teste para nossa funcionalidade:
 
@@ -271,9 +275,3 @@ function chargeTaxForTransfer(balance, transferAmount) {
 Nessa refatoração, extraímos parte da lógica para uma função com nome mais descritivo e legível a cobrança da taxa, além de declarar essa taxa a uma variável com um nome mais declarativo.
 
 Rodando nossos testes com o mesmo comando, observamos que nossa refatoração deu certo: deixou o código mais limpo, com mais facilidade de manutenção, mais legível e continua com o comportamento esperado pelo negócio.
-
-O TDD é uma prática que, inicialmente, parece exagero. Entretanto, ajuda muito no design da sua solução.
-
-Inclusive, eu, enquanto escrevia esse código e esses testes, errei várias vezes e foram os testes que me ajudaram a perceber os meus erros.
-
-Essa prática vai muito mais além disso: um bom livro para se aprofundar é o [Test Driven Development by Example, do Kent Back](https://www.oreilly.com/library/view/test-driven-development/0321146530/).

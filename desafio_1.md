@@ -1,5 +1,15 @@
 # Desafio 1 - Transferências internacionais
 
+{% embed url="https://youtu.be/Kf4uYnV6Bew" %}
+
+O TDD é uma prática que, inicialmente, parece exagero. Entretanto, ajuda muito no design da sua solução.
+
+Inclusive, eu, enquanto escrevia esse código e esses testes, errei várias vezes e foram os testes que me ajudaram a perceber os meus erros.
+
+Essa prática vai muito mais além disso: um bom livro para se aprofundar é o [Test Driven Development by Example, do Kent Back](https://www.oreilly.com/library/view/test-driven-development/0321146530/).
+
+
+
 Agora é com vocês! 🥳
 
 Além de construir tudo o que fizemos aqui, tentem agregar uma nova funcionalidade ao nosso banco, utilizando tudo que aprendemos, inclusive o TDD!

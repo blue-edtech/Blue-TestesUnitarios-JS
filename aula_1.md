@@ -1,6 +1,6 @@
 # Aula 1 - Testes Unitários com JavaScript e Jest
 
-{% embed url="https://youtu.be/TO1hwOBLPJk" %}
+{% embed url="https://youtu.be/cwz3IfkGm8Y" %}
 
 ## Código com testes vs. Código sem testes
 

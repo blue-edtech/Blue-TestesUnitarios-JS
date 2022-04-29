@@ -1,6 +1,6 @@
 # Aula 2 - Configurando a biblioteca e primeiros testes
 
-{% embed url="https://youtu.be/y2IrE2FYl3k" %}
+{% embed url="https://youtu.be/P7P3NDGOOVM" %}
 
 ### Configuração do projeto
 
@@ -111,6 +111,8 @@ test("it should sum numbers with a negative value", () => {
 ```
 
 ### E quando um teste falha?
+
+{% embed url="https://youtu.be/hIPxZi9Unao" %}
 
 Vamos adicionar a função de subtrair na nossa calculadora e, por um descuido (proposital), errar a lógica da função.
 
@@ -243,6 +245,8 @@ expect(updatedAccounts[1].id).toBe(2);
 expect(updatedAccounts[1].balance).toBe(500);
 ```
 
+{% embed url="https://youtu.be/Jf2FhI1sUyY" %}
+
 Por estarmos tratando de `arrays`, existem outras formas mais legíveis e práticas de fazermos as checagens de resultados (`asserts`), principalmente porque não necessariamente podemos garantir a ordem dos elementos deste `array`. Por exemplo:
 
 ```javascript
@@ -286,6 +290,6 @@ Existem diversas formas de realizar `asserts` com o `jest`, sendo que todas são
 
 Vamos dar uma olhada na documentação do `jest` que, por sinal, é bastante rica, e entender os tipos de `asserts` disponíveis pela biblioteca:
 
-https://jestjs.io/pt-BR/docs/expect
+[https://jestjs.io/pt-BR/docs/expect](https://jestjs.io/pt-BR/docs/expect)
 
 Quando tiverem tempo, dediquem-se a ler com calma essa documentação. Ela é bastante didática e, quando aplicada corretamente, deixam seus testes unitários descritivos, legíveis e eficientes.
