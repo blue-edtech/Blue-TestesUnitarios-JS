@@ -1,6 +1,6 @@
 # Aula 5 - Explorando os mocks mais a fundo
 
-{% embed url="https://youtu.be/x6NKHoDvh-Q" %}
+{% embed url="https://youtu.be/PKXVPWL7gbU" %}
 
 Todavia, nosso teste ainda pode melhorar. Lembra que precisamos manter nosso código resiliente? Isto é, não permitir que alterações de código introduzam bugs e passem ilesos na nossa suite de testes unitários. Vamos fazer um teste! faça a seguinte alteração na sua nova função `transferMoney.js`:
 
